@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { motion } from 'framer-motion'
 import { CornerDownLeft, Command } from 'lucide-react'
 import { useKeyFluxStore } from '../../store/useKeyFluxStore'
 import { Char } from './Char'
@@ -7,7 +6,6 @@ import { ProgressRail } from './ProgressRail'
 import { GhostRail } from './GhostRail'
 import { Chip } from '../../components/Chip'
 import { Kbd } from '../../components/Kbd'
-import { dur, ease } from '../../lib/motion'
 
 export function ChallengeDisplayCard() {
   const targetText = useKeyFluxStore((s) => s.targetText)
@@ -18,7 +16,6 @@ export function ChallengeDisplayCard() {
   const requestFocus = useKeyFluxStore((s) => s.requestFocus)
 
   const chars = useMemo(() => targetText.split(''), [targetText])
-  const idle = status === 'idle'
 
   return (
     <section
