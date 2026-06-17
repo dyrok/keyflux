@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   DESIGN TOKENS
+   Channels are stored as raw "H S% L%" so Tailwind can inject alpha values.
+   Theme is swapped via [data-theme] on <html> (see no-flash script in index.html).
+   ========================================================================== */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* surfaces — deep graphite, cool-neutral, never pure black */
+  --bg: 222 18% 7%;
+  --surface-1: 220 16% 10%;
+  --surface-2: 219 15% 13%;
+  --surface-3: 217 14% 17%;
+  --surface-inset: 224 20% 6%;
+
+  /* borders & dividers */
+  --border: 218 12% 20%;
+  --border-strong: 216 12% 27%;
+  --border-subtle: 220 14% 15%;
+
+  /* text */
+  --text-primary: 214 20% 93%;
+  --text-secondary: 216 12% 72%;
+  --text-muted: 218 10% 52%;
+  --text-faint: 219 9% 38%;
+
+  /* accents — desaturated instrument-panel, not neon */
+  --accent-cyan: 188 78% 52%;
+  --accent-cyan-dim: 189 40% 32%;
+  --accent-emerald: 158 64% 46%;
+  --accent-emerald-dim: 159 38% 28%;
+  --accent-crimson: 348 72% 56%;
+  --accent-crimson-dim: 349 45% 34%;
+  --accent-amber: 38 88% 56%;
+  --accent-amber-dim: 37 50% 32%;
+
+  --ring: 188 78% 52%;
+  --shadow-color: 222 40% 3%;
+}
+
+/* Alternate dark preset — "Midnight" (cooler, deeper blue) */
+[data-theme='midnight'] {
+  color-scheme: dark;
+  --bg: 226 32% 6%;
+  --surface-1: 225 28% 9%;
+  --surface-2: 224 26% 12%;
+  --surface-3: 223 24% 16%;
+  --surface-inset: 228 36% 5%;
+  --border: 224 22% 19%;
+  --border-strong: 222 22% 27%;
+  --border-subtle: 225 24% 14%;
+  --text-primary: 213 30% 94%;
+  --text-secondary: 217 18% 74%;
+  --text-muted: 219 14% 54%;
+  --text-faint: 221 12% 40%;
+  --accent-cyan: 196 90% 56%;
+  --accent-cyan-dim: 197 45% 34%;
+  --accent-emerald: 160 68% 48%;
+  --accent-emerald-dim: 160 40% 28%;
+  --accent-crimson: 344 78% 60%;
+  --accent-crimson-dim: 345 48% 36%;
+  --accent-amber: 40 92% 58%;
+  --accent-amber-dim: 39 52% 34%;
+  --ring: 196 90% 56%;
+  --shadow-color: 228 50% 2%;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: 210 24% 96%;
+  --surface-1: 0 0% 100%;
+  --surface-2: 210 20% 98%;
+  --surface-3: 212 18% 94%;
+  --surface-inset: 212 22% 92%;
+  --border: 214 16% 84%;
+  --border-strong: 214 14% 72%;
+  --border-subtle: 213 18% 90%;
+  --text-primary: 220 30% 14%;
+  --text-secondary: 218 16% 32%;
+  --text-muted: 218 12% 46%;
+  --text-faint: 216 10% 62%;
+  --accent-cyan: 191 84% 38%;
+  --accent-cyan-dim: 190 50% 72%;
+  --accent-emerald: 159 70% 36%;
+  --accent-emerald-dim: 158 45% 72%;
+  --accent-crimson: 348 70% 50%;
+  --accent-crimson-dim: 348 60% 78%;
+  --accent-amber: 34 86% 44%;
+  --accent-amber-dim: 36 70% 72%;
+  --ring: 191 84% 38%;
+  --shadow-color: 214 30% 50%;
+}
+
+/* font stacks */
+:root {
+  --font-sans: 'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-serif: 'Times New Roman', Times, serif; /* academic compliance only — see .tnr-12 */
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--bg));
+    color: hsl(var(--text-primary));
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+  }
+
+  /* refined scrollbars to match the console aesthetic */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--surface-inset));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-strong));
+    border-radius: 999px;
+    border: 2px solid hsl(var(--surface-inset));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--text-faint));
+  }
+
+  ::selection {
+    background: hsl(var(--accent-cyan) / 0.25);
+  }
+}
+
+@layer components {
+  /* --------------------------------------------------------------------------
+     ACADEMIC COMPLIANCE UTILITY
+     A 12pt Times New Roman profile, applied ONLY to: keyboard row labels,
+     layout-switch option labels, accuracy-matrix headers + cells, keycap
+     legends, and action-button label text. Color always comes from tokens,
+     never from this class, so theming/contrast stay intact.
+     -------------------------------------------------------------------------- */
+  .tnr-12 {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    font-feature-settings: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* compact variant for dense keycap legends */
+  .tnr-12--cap {
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  /* uppercase section label */
+  .label {
+    font-size: 0.6875rem;
+    line-height: 0.875rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: hsl(var(--text-muted));
+  }
+
+  /* base keycap chrome — premium hardware look (gradient + specular top edge) */
+  .keycap {
+    position: relative;
+    isolation: isolate;
+    user-select: none;
+    border-radius: 7px;
+    border: 1px solid hsl(var(--border));
+    border-top-color: hsl(0 0% 100% / 0.1);
+    background-image: linear-gradient(180deg, hsl(0 0% 100% / 0.045) 0%, hsl(0 0% 100% / 0) 38%),
+      linear-gradient(180deg, hsl(var(--surface-3)) 0%, hsl(var(--surface-2)) 100%);
+    box-shadow: inset 0 1px 0 0 hsl(0 0% 100% / 0.06), 0 2px 0 0 hsl(var(--shadow-color) / 0.9),
+      0 6px 12px -6px hsl(var(--shadow-color) / 0.6);
+    color: hsl(var(--text-secondary));
+    transition: transform 75ms ease-out, background-color 75ms ease-out, box-shadow 75ms ease-out,
+      border-color 120ms ease-out, color 120ms ease-out;
+  }
+
+  .keycap[data-pressed='true'] {
+    transform: translateY(2px);
+    background-image: linear-gradient(180deg, hsl(var(--surface-2)) 0%, hsl(var(--surface-1)) 100%);
+    box-shadow: inset 0 2px 4px 0 hsl(var(--shadow-color) / 0.8);
+    border-color: hsl(var(--border-strong));
+    color: hsl(var(--text-primary));
+  }
+
+  /* next-to-type affordance (subtle cyan, no travel) */
+  .keycap[data-next='true'] {
+    border-color: hsl(var(--accent-cyan) / 0.4);
+    color: hsl(var(--accent-cyan));
+    box-shadow: 0 0 0 1px hsl(var(--accent-cyan) / 0.25),
+      inset 0 0 12px -6px hsl(var(--accent-cyan) / 0.5), 0 2px 0 0 hsl(var(--shadow-color) / 0.9);
+  }
+
+  .keycap[data-pressed='true'][data-next='true'] {
+    box-shadow: inset 0 2px 4px 0 hsl(var(--shadow-color) / 0.8),
+      0 0 0 1px hsl(var(--accent-cyan) / 0.5);
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* focus ring used across interactive elements */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    box-shadow: 0 0 0 2px hsl(var(--bg)), 0 0 0 4px hsl(var(--ring) / 0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
